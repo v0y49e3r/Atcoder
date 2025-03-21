@@ -1,0 +1,4 @@
+1> how to use sorted in python 
+        https://www.geeksforgeeks.org/python-sorted-function/
+2>
+
