@@ -1,73 +1,71 @@
-AtCoderからGitHubにソースコードを自動でアップロードするスクリプトの使い方
+AtCoderからGitHubへ自動的にソースコードをアップロードするスクリプトの使い方
 1. 概要
 
-このスクリプトは、AtCoderからコードを自動的にダウンロードし、GitHubにアップロードするツールです。手動でスクリプトを実行することも、自動で実行するようにcronjobを設定することもできます。
+このスクリプトは、AtCoderからソースコードを自動的にダウンロードし、GitHubにアップロードします。手動でスクリプトを実行するか、cronjobを使用して自動実行することができます。
 2. 環境設定
 2.1. Pythonのインストール
 
-まず、Pythonがインストールされているか確認します。次のコマンドを実行して確認してください：
+Pythonがインストールされているか確認するには、次のコマンドを実行します:
 
 python3 --version
 
-もしインストールされていなければ、以下のコマンドでインストールします：
+インストールされていない場合、次のコマンドでインストールします:
 
 sudo apt update && sudo apt install python3
 
 2.2. 必要なライブラリのインストール
 
-次に、必要なPythonライブラリをインストールします。以下のコマンドを実行してください：
+次のコマンドを実行して、必要なライブラリをインストールします:
 
 pip install requests beautifulsoup4 gitpython
 
-3. GitHub Tokenの安全な設定
+3. GitHubのアクセストークン設定
 
-コード内に直接トークンを記載するのではなく、環境変数として設定することをお勧めします。
+コードにトークンを直接保存するのではなく、環境変数を使うことをお勧めします:
 
 export GITHUB_TOKEN="your_token_here"
 
-Pythonスクリプト内では、次のようにしてトークンを取得します：
+スクリプト内で、次のようにトークンを取得します:
 
 import os
 github_token = os.getenv("GITHUB_TOKEN")
 
 4. スクリプトの手動実行
 
-AtCoderからコードをダウンロードし、GitHubにアップロードしたいときは、以下のコマンドでスクリプトを実行します：
+AtCoderからソースコードをダウンロードしてGitHubにアップロードするためには、次のコマンドを実行します:
 
 python3 your_script.py
 
-5. cronjobを使って自動実行を設定
+5. 自動実行の設定 (cronjob)
 
-cronjobを使用して、スクリプトを定期的に自動実行することができます。
-5.1. Cronjobの編集
-
-まず、以下のコマンドでcronjobの設定を編集します：
+cronjobを使用して、スクリプトを自動で実行するよう設定できます。
+5.1. cronjobを開く
 
 crontab -e
 
-5.2. スクリプトの実行スケジュールを追加
+5.2. スクリプトを実行する時間を設定
 
-次の行をファイルの最後に追加して、30分ごとにスクリプトが実行されるようにします：
+例えば、30分ごとに実行する場合:
 
 */30 * * * * /usr/bin/python3 /home/v0y493r/atCoderSubmission/your_script.py >> /home/v0y493r/atCoderSubmission/log.txt 2>&1
 
-もし毎日12時に実行したい場合は、次のように書き換えます：
+または、毎日12時に実行する場合:
 
 0 12 * * * /usr/bin/python3 /home/v0y493r/atCoderSubmission/your_script.py >> /home/v0y493r/atCoderSubmission/log.txt 2>&1
 
-5.3. cronjobが保存されたか確認
-
-設定が保存されたか確認するには、以下のコマンドを実行します：
+5.3. cronjobが設定されたか確認
 
 crontab -l
 
-表示されたcronjobの内容を確認し、正しく保存されていれば問題ありません。
+このコマンドで、設定したcronjobが表示されれば、正常に設定されています。
 6. デバッグとエラーチェック
 
-スクリプトが正しく動作しない場合：
+もしスクリプトが正しく動作しない場合:
 
-    ログファイルを確認します：cat /home/v0y493r/atCoderSubmission/log.txt
+    ログファイルを確認: cat /home/v0y493r/atCoderSubmission/log.txt
+    環境変数が正しく設定されているか確認: echo $GITHUB_TOKEN
+    手動でスクリプトを実行してエラーメッセージを確認
 
-    環境変数が正しく設定されているか確認します：echo $GITHUB_TOKEN
+7. 結論
 
-    手動でスクリプトを実行してエラーメッセージを確認します。
+設定が完了した後は、スクリプトが自動的にAtCoderからソースコードをダウンロードし、GitHubにアップロードします。手動で操作する必要はありません。
